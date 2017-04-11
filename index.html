@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Frontline Golf</title>
+    <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
+    <link href="node_modules/mdi/css/materialdesignicons.min.css" media="all" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/style.css">
+
+  </head>
+  <body ng-app="frontlineGolf" ng-controller="golfController">
+	
+	<md-toolbar md-scroll-shrink>
+      <div class="md-toolbar-tools"> 
+
+        <p><strong>Frontline Golf</strong></p>
+        
+        <md-button ng-click="openSidebar()">
+          <md-icon class="mdi mdi-plus-circle"></md-icon>
+            New Player
+        </md-button>
+        <h5 id="avgScore">Avg. score: {{avgScore}}</h5>
+      
+      </div>
+    </md-toolbar>
+
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left">
+      <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">{{ sidebarTitle }}</h1>
+      </md-toolbar>
+      <md-content layout-padding>
+        <form>
+          <md-input-container>
+            <label for="title">Player Name</label>
+            <input type="text" id="title"
+                   ng-model="currentData.name" md-autofocus>
+          </md-input-container>
+          <md-input-container>
+            <label for="scores">Scores</label>
+            <input type="text" id="scores"
+                  ng-model="currentData.scores">
+          </md-input-container>
+          <md-input-container>
+            <label for="image">Image Link</label>
+            <input type="text" id="image"
+                  ng-model="currentData.image">
+          </md-input-container>
+          <md-button ng-if="!editing" ng-click="saveData(currentData)" class="md-primary">
+            Save
+          </md-button>
+          <md-button ng-if="editing" ng-click="saveEdit(currentData)" class="md-primary">
+            Save Edit
+          </md-button>
+          <md-button ng-click="closeSidebar()" class="md-warn">
+            Cancel
+          </md-button>
+        </form>
+      </md-content>
+    </md-sidenav>
+
+    <md-content class="md-padding" layout="row" layout-wrap>
+      <md-card ng-repeat="currentData in data"
+               flex="20"
+               class="classified">
+        <img ng-src="{{ currentData.image }}" class="md-card-image">
+        <md-card-content>
+          <div class="classified-info" ng-show="!showContact">
+            <h2 class="md-title">{{ currentData.name }}</h2>
+            <h3>{{currentData.scores}}</h3>
+          </div>
+
+          <div layout="row">
+          
+            <md-button
+              class="md-warn"
+              ng-click="editScore(currentData)">
+              Edit
+            </md-button>
+
+            <md-button
+              class="md-primary" 
+              ng-click="calculateAvgScore(currentData.scores); showAvg = true"
+              ng-show="!showAdmin">
+              Calculate Avg. Score
+            </md-button>
+ 
+
+        </md-card-content>
+      </md-card>
+    </md-content>
+
+    
+
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-material/angular-material.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="components/golf.ctr.js"></script>
+    <script src="components/golf.fac.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.5.1/lodash.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.2.4/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.1.3/angularfire.min.js"></script>
+
+  </body>
+</html>
